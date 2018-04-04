@@ -7,7 +7,7 @@ namespace AsyncParallelRunner
     {
         public IEnumerable<string> JobNames { get; set; }
 
-        public ConcurrencyMode ConcurrencyMode { get; set; }
+        public ExecutionMode ExecutionMode { get; set; }
 
         public WorkType WorkType { get; set; }
 

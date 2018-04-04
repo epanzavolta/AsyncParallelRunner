@@ -5,7 +5,7 @@ namespace AsyncParallelRunner
 {
     class Program
     {
-        private const ConcurrencyMode Mode = ConcurrencyMode.Sequential;
+        private const ExecutionMode Mode = ExecutionMode.Async;
         private const WorkType Type = WorkType.CpuBound;
 
         static async Task Main(string[] args)
@@ -14,7 +14,7 @@ namespace AsyncParallelRunner
             {
                 JobNames = new[] { "A", "B", "C" },
                 JobDuration = TimeSpan.FromSeconds(2),
-                ConcurrencyMode = Mode,
+                ExecutionMode = Mode,
                 WorkType = Type
             };
 

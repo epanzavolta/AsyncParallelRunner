@@ -10,8 +10,7 @@ namespace AsyncParallelRunner
 
         public Runner()
         : this(new JobTracer(DateTime.Now))
-        {
-        }
+        { }
 
         public Runner(IJobTracer jobTracer)
         {
@@ -24,17 +23,22 @@ namespace AsyncParallelRunner
                 .Select(s => new LongRunningJob(s, _jobTracer))
                 .ToList();
             
-            var jobsTasks = jobs.Select(j => GetJobExecutionTask(j, configuration)).ToList();
-
-            await Task.WhenAll(jobsTasks);
+            await Task.WhenAll(jobs.Select(j => GetJobExecutionTask(j, configuration)));
         }
 
         private Task GetJobExecutionTask(LongRunningJob job, RunConfiguration runConfiguration)
         {
-            if (runConfiguration.ConcurrencyMode == ConcurrencyMode.Sequential)
-                return job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration);
+            switch (runConfiguration.ExecutionMode)
+            {
+                case ExecutionMode.Async:
+                    return job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration);
 
-            return Task.Run(async () => await job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration));
+                case ExecutionMode.Parallel:
+                    return Task.Run(async () => await job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration));
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(runConfiguration.ExecutionMode));
+            }
         }
     }
 }

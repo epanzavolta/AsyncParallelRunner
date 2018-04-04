@@ -10,9 +10,9 @@ namespace AsyncParallelRunner.Tests
     public class RunnerTests
     {
         [Fact]
-        public async Task WhenCpuBound_AndSequential_ShouldExecuteJobsOneAfterEachOther()
+        public async Task WhenCpuBound_AndAsync_ShouldExecuteJobsSequentiallyOneAfterEachOther()
         {
-            var traceData = await RunAsync(ConcurrencyMode.Sequential, WorkType.CpuBound);
+            var traceData = await RunAsync(ExecutionMode.Async, WorkType.CpuBound);
 
             var expectedTraceData = new List<TraceData>
             {
@@ -28,9 +28,9 @@ namespace AsyncParallelRunner.Tests
         }
 
         [Fact]
-        public async Task WhenCpuBound_AndParallel_ShouldStartAllJobsThenFinishAllJobs()
+        public async Task WhenCpuBound_AndParallel_ShouldStartAllJobsInParallelThenFinishAllJobs()
         {
-            var traceData = await RunAsync(ConcurrencyMode.Parallel, WorkType.CpuBound);
+            var traceData = await RunAsync(ExecutionMode.Parallel, WorkType.CpuBound);
 
             var expectedStartTraceData = new List<TraceData>
             {
@@ -52,9 +52,9 @@ namespace AsyncParallelRunner.Tests
         }
 
         [Fact]
-        public async Task WhenIOBound_AndSequential_ShouldStartAllJobsThenFinishAllJobs()
+        public async Task WhenIOBound_AndAsync_ShouldStartAllJobsInParallelThenFinishAllJobs()
         {
-            var traceData = await RunAsync(ConcurrencyMode.Sequential, WorkType.IOBound);
+            var traceData = await RunAsync(ExecutionMode.Async, WorkType.IOBound);
 
             var expectedStartTraceData = new List<TraceData>
             {
@@ -76,9 +76,9 @@ namespace AsyncParallelRunner.Tests
         }
 
         [Fact]
-        public async Task WhenIOBound_AndParallel_ShouldStartAllJobsThenFinishAllJobs()
+        public async Task WhenIOBound_AndParallel_ShouldStartAllJobsInParallelThenFinishAllJobs()
         {
-            var traceData = await RunAsync(ConcurrencyMode.Parallel, WorkType.IOBound);
+            var traceData = await RunAsync(ExecutionMode.Parallel, WorkType.IOBound);
 
             var expectedStartTraceData = new List<TraceData>
             {
@@ -99,13 +99,13 @@ namespace AsyncParallelRunner.Tests
             traceData.Skip(3).Should().BeEquivalentTo(expectedStopTraceData);
         }
 
-        private async Task<List<TraceData>> RunAsync(ConcurrencyMode concurrencyMode, WorkType workType)
+        private async Task<List<TraceData>> RunAsync(ExecutionMode executionMode, WorkType workType)
         {
             var config = new RunConfiguration
             {
                 JobNames = new[] { "A", "B", "C" },
-                JobDuration = TimeSpan.FromSeconds(1),
-                ConcurrencyMode = concurrencyMode,
+                JobDuration = TimeSpan.FromMilliseconds(500),
+                ExecutionMode = executionMode,
                 WorkType = workType
             };
 

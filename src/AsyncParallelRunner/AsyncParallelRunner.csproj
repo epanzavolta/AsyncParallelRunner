@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionType.cs" />
-    <Compile Include="ConcurrencyMode.cs" />
+    <Compile Include="ExecutionMode.cs" />
     <Compile Include="RunConfiguration.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="LongRunningJob.cs" />

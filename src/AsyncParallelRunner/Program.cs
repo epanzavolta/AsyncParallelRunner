@@ -5,23 +5,56 @@ namespace AsyncParallelRunner
 {
     class Program
     {
-        private const ExecutionMode Mode = ExecutionMode.Async;
-        private const WorkType Type = WorkType.CpuBound;
-
         static async Task Main(string[] args)
         {
             var config = new RunConfiguration
             {
                 JobNames = new[] { "A", "B", "C" },
                 JobDuration = TimeSpan.FromSeconds(2),
-                ExecutionMode = Mode,
-                WorkType = Type
+                ExecutionMode = ReadExecutionMode(),
+                WorkType = ReadWorkType()
             };
+
+            Console.WriteLine($"\nSTARTING WORK ({config.WorkType}, {config.ExecutionMode})\n");
 
             await new Runner().RunAsync(config);
 
-            Console.WriteLine("COMPLETED");
+            Console.WriteLine("\nWORK COMPLETED\nPress any key to continue...");
             Console.ReadLine();
+        }
+
+        private static WorkType ReadWorkType()
+        {
+            Console.WriteLine("Choose work type (1:CPU bound,  2:I/O bound).");
+            int workTypeNumber = Int32.Parse(Console.ReadLine());
+
+            switch (workTypeNumber)
+            {
+                case 1:
+                    return WorkType.CpuBound;
+                case 2:
+                    return WorkType.IOBound;
+                default:
+                    throw new ArgumentOutOfRangeException();
+
+            }
+        }
+
+        private static ExecutionMode ReadExecutionMode()
+        {
+            Console.WriteLine("Choose execution mode (1:Async,  2:Parallel).");
+            int executionModeNumber = Int32.Parse(Console.ReadLine());
+
+            switch (executionModeNumber)
+            {
+                case 1:
+                    return ExecutionMode.Async;
+                case 2:
+                    return ExecutionMode.Parallel;
+                default:
+                    throw new ArgumentOutOfRangeException();
+
+            }
         }
     }
 }

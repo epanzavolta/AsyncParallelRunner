@@ -19,14 +19,21 @@ namespace AsyncParallelRunner
 
         public async Task RunAsync(RunConfiguration configuration)
         {
-            var jobs = configuration.JobNames
-                .Select(s => new LongRunningJob(s, _jobTracer))
+            var jobTasks = configuration.JobNames
+                .Select(CreateJob)
+                .Select(job => GetJobExecutionTask(job, configuration))
                 .ToList();
             
-            await Task.WhenAll(jobs.Select(j => GetJobExecutionTask(j, configuration)));
+            await Task.WhenAll(jobTasks);
         }
 
-        private Task GetJobExecutionTask(LongRunningJob job, RunConfiguration runConfiguration)
+        private ILongRunningJob CreateJob(string name)
+        {
+            return new LongRunningJobTracingDecorator(
+                new LongRunningJob(name), _jobTracer);
+        }
+
+        private Task GetJobExecutionTask(ILongRunningJob job, RunConfiguration runConfiguration)
         {
             switch (runConfiguration.ExecutionMode)
             {

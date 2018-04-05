@@ -3,37 +3,47 @@ using System.Threading.Tasks;
 
 namespace AsyncParallelRunner
 {
-    class LongRunningJob
+    class LongRunningJob : ILongRunningJob
     {
-        private readonly string _name;
-        private readonly IJobTracer _logger;
-
-        public LongRunningJob(string name, IJobTracer logger)
+        public LongRunningJob(string name)
         {
-            _name = name;
-            _logger = logger;
+            Name = name;
         }
+
+        public string Name { get; }
 
         public async Task ExecuteAsync(WorkType workType, TimeSpan duration)
         {
-            _logger.Trace(_name, ActionType.Started);
-
             if (workType == WorkType.CpuBound)
-                BusyWait(duration);
+                SimulateCpuBoundWork(duration);
             else if (workType == WorkType.IOBound)
-                await Task.Delay(duration);
-
-            _logger.Trace(_name, ActionType.Stopped);
+                await SimulateIOBoundWorkAsync(duration);
         }
-        
-        private void BusyWait(TimeSpan duration)
+
+        /// <summary>
+        /// Simulates a CPU-intensive operation;
+        /// in this case, just an active spinning on the CPU.
+        /// </summary>
+        /// <param name="duration"></param>
+        private void SimulateCpuBoundWork(TimeSpan duration)
         {
             var startTime = DateTime.Now;
-
-            // active spinning on the CPU
             while ((DateTime.Now - startTime) < duration)
             {
             }
         }
+
+        /// <summary>
+        /// Simulates an IO-bound operation (acess to files, database, ...)
+        /// through a natively async interface;
+        /// in this case, just a delay.
+        /// </summary>
+        /// <param name="duration"></param>
+        /// <returns></returns>
+        private static async Task SimulateIOBoundWorkAsync(TimeSpan duration)
+        {
+            await Task.Delay(duration);
+        }
+
     }
 }

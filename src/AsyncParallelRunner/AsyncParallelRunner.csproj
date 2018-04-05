@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="ActionType.cs" />
     <Compile Include="ExecutionMode.cs" />
+    <Compile Include="ILongRunningJob.cs" />
+    <Compile Include="LongRunningJobTracingDecorator.cs" />
     <Compile Include="RunConfiguration.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="LongRunningJob.cs" />

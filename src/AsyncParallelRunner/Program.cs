@@ -42,15 +42,15 @@ namespace AsyncParallelRunner
 
         private static ExecutionMode ReadExecutionMode()
         {
-            Console.WriteLine("Choose execution mode (1:Async,  2:Parallel).");
+            Console.WriteLine("Choose execution mode (1:Simple Async,  2:Task.Run).");
             int executionModeNumber = Int32.Parse(Console.ReadLine());
 
             switch (executionModeNumber)
             {
                 case 1:
-                    return ExecutionMode.Async;
+                    return ExecutionMode.SimpleAsync;
                 case 2:
-                    return ExecutionMode.Parallel;
+                    return ExecutionMode.TaskRun;
                 default:
                     throw new ArgumentOutOfRangeException();
 

@@ -10,9 +10,9 @@ namespace AsyncParallelRunner.Tests
     public class RunnerTests
     {
         [Fact]
-        public async Task WhenCpuBound_AndAsync_ShouldExecuteJobsSequentiallyOneAfterEachOther()
+        public async Task WhenCpuBound_AndSimpleAsync_ShouldExecuteJobsSequentiallyOneAfterEachOther()
         {
-            var traceData = await RunAsync(ExecutionMode.Async, WorkType.CpuBound);
+            var traceData = await RunAsync(ExecutionMode.SimpleAsync, WorkType.CpuBound);
 
             var expectedTraceData = new List<TraceData>
             {
@@ -28,9 +28,9 @@ namespace AsyncParallelRunner.Tests
         }
 
         [Fact]
-        public async Task WhenCpuBound_AndParallel_ShouldStartAllJobsInParallelThenFinishAllJobs()
+        public async Task WhenCpuBound_AndTaskRun_ShouldStartAllJobsInParallelThenFinishAllJobs()
         {
-            var traceData = await RunAsync(ExecutionMode.Parallel, WorkType.CpuBound);
+            var traceData = await RunAsync(ExecutionMode.TaskRun, WorkType.CpuBound);
 
             var expectedStartTraceData = new List<TraceData>
             {
@@ -52,9 +52,9 @@ namespace AsyncParallelRunner.Tests
         }
 
         [Fact]
-        public async Task WhenIOBound_AndAsync_ShouldStartAllJobsInParallelThenFinishAllJobs()
+        public async Task WhenIOBound_AndSimpleAsync_ShouldStartAllJobsInParallelThenFinishAllJobs()
         {
-            var traceData = await RunAsync(ExecutionMode.Async, WorkType.IOBound);
+            var traceData = await RunAsync(ExecutionMode.SimpleAsync, WorkType.IOBound);
 
             var expectedStartTraceData = new List<TraceData>
             {
@@ -76,9 +76,9 @@ namespace AsyncParallelRunner.Tests
         }
 
         [Fact]
-        public async Task WhenIOBound_AndParallel_ShouldStartAllJobsInParallelThenFinishAllJobs()
+        public async Task WhenIOBound_AndTaskRun_ShouldStartAllJobsInParallelThenFinishAllJobs()
         {
-            var traceData = await RunAsync(ExecutionMode.Parallel, WorkType.IOBound);
+            var traceData = await RunAsync(ExecutionMode.TaskRun, WorkType.IOBound);
 
             var expectedStartTraceData = new List<TraceData>
             {

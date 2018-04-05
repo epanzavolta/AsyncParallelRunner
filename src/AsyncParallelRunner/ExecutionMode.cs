@@ -2,7 +2,7 @@
 {
     public enum ExecutionMode
     {
-        Async,
-        Parallel
+        SimpleAsync,
+        TaskRun
     }
 }

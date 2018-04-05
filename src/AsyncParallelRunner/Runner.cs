@@ -37,10 +37,10 @@ namespace AsyncParallelRunner
         {
             switch (runConfiguration.ExecutionMode)
             {
-                case ExecutionMode.Async:
+                case ExecutionMode.SimpleAsync:
                     return job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration);
 
-                case ExecutionMode.Parallel:
+                case ExecutionMode.TaskRun:
                     return Task.Run(async () => await job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration));
 
                 default:

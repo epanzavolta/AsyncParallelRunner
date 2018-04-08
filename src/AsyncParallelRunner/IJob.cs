@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace AsyncParallelRunner
 {
-    internal interface ILongRunningJob
+    internal interface IJob
     {
         string Name { get; }
 

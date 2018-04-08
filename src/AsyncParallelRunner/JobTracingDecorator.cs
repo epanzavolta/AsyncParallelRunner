@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace AsyncParallelRunner
 {
-    class LongRunningJobTracingDecorator : ILongRunningJob
+    class JobTracingDecorator : IJob
     {
-        private readonly ILongRunningJob _decoratee;
+        private readonly IJob _decoratee;
         private readonly IJobTracer _logger;
 
-        public LongRunningJobTracingDecorator(ILongRunningJob decoratee, IJobTracer logger)
+        public JobTracingDecorator(IJob decoratee, IJobTracer logger)
         {
             _decoratee = decoratee;
             _logger = logger;
@@ -18,11 +18,11 @@ namespace AsyncParallelRunner
 
         public async Task ExecuteAsync(WorkType workType, TimeSpan duration)
         {
-            _logger.Trace(_decoratee.Name, ActionType.Started);
+            _logger.Trace(_decoratee.Name, ActionType.Start);
 
             await _decoratee.ExecuteAsync(workType, duration);
 
-            _logger.Trace(_decoratee.Name, ActionType.Stopped);
+            _logger.Trace(_decoratee.Name, ActionType.Finish);
         }
     }
 }

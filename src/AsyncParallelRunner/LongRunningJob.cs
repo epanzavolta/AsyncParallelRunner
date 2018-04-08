@@ -3,13 +3,8 @@ using System.Threading.Tasks;
 
 namespace AsyncParallelRunner
 {
-    class LongRunningJob : ILongRunningJob
+    class LongRunningJob : IJob
     {
-        public LongRunningJob(string name)
-        {
-            Name = name;
-        }
-
         public string Name { get; }
 
         public async Task ExecuteAsync(WorkType workType, TimeSpan duration)
@@ -18,6 +13,8 @@ namespace AsyncParallelRunner
                 SimulateCpuBoundWork(duration);
             else if (workType == WorkType.IOBound)
                 await SimulateIOBoundWorkAsync(duration);
+            else
+                throw new ArgumentOutOfRangeException(nameof(workType));
         }
 
         /// <summary>
@@ -29,8 +26,7 @@ namespace AsyncParallelRunner
         {
             var startTime = DateTime.Now;
             while ((DateTime.Now - startTime) < duration)
-            {
-            }
+            { }
         }
 
         /// <summary>
@@ -45,5 +41,9 @@ namespace AsyncParallelRunner
             await Task.Delay(duration);
         }
 
+        public LongRunningJob(string name)
+        {
+            Name = name;
+        }
     }
 }

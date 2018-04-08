@@ -2,7 +2,7 @@
 {
     public enum ActionType
     {
-        Started,
-        Stopped
+        Start,
+        Finish
     }
 }

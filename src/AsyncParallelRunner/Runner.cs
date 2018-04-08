@@ -8,44 +8,46 @@ namespace AsyncParallelRunner
     {
         private readonly IJobTracer _jobTracer;
 
+        private readonly Func<IJob, RunConfiguration, Task> _executeJobFunc = 
+            (job, config) => job.ExecuteAsync(config.WorkType, config.JobDuration);
+        
+        public async Task RunAsync(RunConfiguration configuration)
+        {
+            var jobTasks = configuration.JobNames
+                .Select(CreateJob)
+                .Select(job => GetJobExecutionTask(job, configuration));
+            
+            await Task.WhenAll(jobTasks);
+        }
+
+        private IJob CreateJob(string name)
+        {
+            return new JobTracingDecorator(
+                new LongRunningJob(name), _jobTracer);
+        }
+
+        private Task GetJobExecutionTask(IJob job, RunConfiguration runConfiguration)
+        {
+            switch (runConfiguration.ExecutionMode)
+            {
+                case ExecutionMode.SimpleAsync:
+                    return _executeJobFunc(job, runConfiguration);
+
+                case ExecutionMode.TaskRun:
+                    return Task.Run(async () => await _executeJobFunc(job, runConfiguration));
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(runConfiguration.ExecutionMode));
+            }
+        }
+
         public Runner()
-        : this(new JobTracer(DateTime.Now))
+            : this(new JobTracer(DateTime.Now))
         { }
 
         public Runner(IJobTracer jobTracer)
         {
             _jobTracer = jobTracer;
-        }
-
-        public async Task RunAsync(RunConfiguration configuration)
-        {
-            var jobTasks = configuration.JobNames
-                .Select(CreateJob)
-                .Select(job => GetJobExecutionTask(job, configuration))
-                .ToList();
-            
-            await Task.WhenAll(jobTasks);
-        }
-
-        private ILongRunningJob CreateJob(string name)
-        {
-            return new LongRunningJobTracingDecorator(
-                new LongRunningJob(name), _jobTracer);
-        }
-
-        private Task GetJobExecutionTask(ILongRunningJob job, RunConfiguration runConfiguration)
-        {
-            switch (runConfiguration.ExecutionMode)
-            {
-                case ExecutionMode.SimpleAsync:
-                    return job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration);
-
-                case ExecutionMode.TaskRun:
-                    return Task.Run(async () => await job.ExecuteAsync(runConfiguration.WorkType, runConfiguration.JobDuration));
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(runConfiguration.ExecutionMode));
-            }
         }
     }
 }

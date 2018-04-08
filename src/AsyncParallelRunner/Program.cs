@@ -7,6 +7,8 @@ namespace AsyncParallelRunner
     {
         static async Task Main(string[] args)
         {
+            Console.WriteLine("Welcome to Async / Parallel demo.");
+
             var config = new RunConfiguration
             {
                 JobNames = new[] { "A", "B", "C" },

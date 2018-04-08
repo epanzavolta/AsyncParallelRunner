@@ -16,12 +16,12 @@ namespace AsyncParallelRunner.Tests
 
             var expectedTraceData = new List<TraceData>
             {
-                new TraceData{JobName = "A", Action = ActionType.Started},
-                new TraceData{JobName = "A", Action = ActionType.Stopped},
-                new TraceData{JobName = "B", Action = ActionType.Started},
-                new TraceData{JobName = "B", Action = ActionType.Stopped},
-                new TraceData{JobName = "C", Action = ActionType.Started},
-                new TraceData{JobName = "C", Action = ActionType.Stopped}
+                new TraceData{JobName = "A", Action = ActionType.Start},
+                new TraceData{JobName = "A", Action = ActionType.Finish},
+                new TraceData{JobName = "B", Action = ActionType.Start},
+                new TraceData{JobName = "B", Action = ActionType.Finish},
+                new TraceData{JobName = "C", Action = ActionType.Start},
+                new TraceData{JobName = "C", Action = ActionType.Finish}
             };
 
             traceData.Should().BeEquivalentTo(expectedTraceData);
@@ -34,15 +34,15 @@ namespace AsyncParallelRunner.Tests
 
             var expectedStartTraceData = new List<TraceData>
             {
-                new TraceData{JobName = "A", Action = ActionType.Started},
-                new TraceData{JobName = "B", Action = ActionType.Started},
-                new TraceData{JobName = "C", Action = ActionType.Started}
+                new TraceData{JobName = "A", Action = ActionType.Start},
+                new TraceData{JobName = "B", Action = ActionType.Start},
+                new TraceData{JobName = "C", Action = ActionType.Start}
             };
             var expectedStopTraceData = new List<TraceData>
             {
-                new TraceData{JobName = "A", Action = ActionType.Stopped},
-                new TraceData{JobName = "B", Action = ActionType.Stopped},
-                new TraceData{JobName = "C", Action = ActionType.Stopped}
+                new TraceData{JobName = "A", Action = ActionType.Finish},
+                new TraceData{JobName = "B", Action = ActionType.Finish},
+                new TraceData{JobName = "C", Action = ActionType.Finish}
             };
 
             traceData.Count.Should().Be(6);
@@ -58,15 +58,15 @@ namespace AsyncParallelRunner.Tests
 
             var expectedStartTraceData = new List<TraceData>
             {
-                new TraceData{JobName = "A", Action = ActionType.Started},
-                new TraceData{JobName = "B", Action = ActionType.Started},
-                new TraceData{JobName = "C", Action = ActionType.Started}
+                new TraceData{JobName = "A", Action = ActionType.Start},
+                new TraceData{JobName = "B", Action = ActionType.Start},
+                new TraceData{JobName = "C", Action = ActionType.Start}
             };
             var expectedStopTraceData = new List<TraceData>
             {
-                new TraceData{JobName = "A", Action = ActionType.Stopped},
-                new TraceData{JobName = "B", Action = ActionType.Stopped},
-                new TraceData{JobName = "C", Action = ActionType.Stopped}
+                new TraceData{JobName = "A", Action = ActionType.Finish},
+                new TraceData{JobName = "B", Action = ActionType.Finish},
+                new TraceData{JobName = "C", Action = ActionType.Finish}
             };
 
             traceData.Count.Should().Be(6);
@@ -82,15 +82,15 @@ namespace AsyncParallelRunner.Tests
 
             var expectedStartTraceData = new List<TraceData>
             {
-                new TraceData{JobName = "A", Action = ActionType.Started},
-                new TraceData{JobName = "B", Action = ActionType.Started},
-                new TraceData{JobName = "C", Action = ActionType.Started}
+                new TraceData{JobName = "A", Action = ActionType.Start},
+                new TraceData{JobName = "B", Action = ActionType.Start},
+                new TraceData{JobName = "C", Action = ActionType.Start}
             };
             var expectedStopTraceData = new List<TraceData>
             {
-                new TraceData{JobName = "A", Action = ActionType.Stopped},
-                new TraceData{JobName = "B", Action = ActionType.Stopped},
-                new TraceData{JobName = "C", Action = ActionType.Stopped}
+                new TraceData{JobName = "A", Action = ActionType.Finish},
+                new TraceData{JobName = "B", Action = ActionType.Finish},
+                new TraceData{JobName = "C", Action = ActionType.Finish}
             };
 
             traceData.Count.Should().Be(6);
